@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Store</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div id="petStore">
+        <h1>{{ message }}</h1>
+        <div v-if="!displayCart">
+            <button v-on:click="showCart()" v-bind:disabled="!canShowCart"><i class="fa fa-shopping-cart"></i> Checkout ({{numberOfItems}})</button>
+            <br>
+            <br>
+            <img width="300" height="300" v-bind:src="product.image" alt="cat image">
+            <h2 v-text="product.title"></h2>
+            <div style="display: flex; flex-direction: row; align-items: center; gap: 5px;"><i class="fa fa-heart-o" aria-hidden="true"></i><p v-text="product.likes"></p></div>
+            <p v-text="product.id"></p>
+            <p v-text="product.description"></p>
+            <p>Price: {{ product.price }}</p>
+            <p>Remaining: <span v-text="product.availability"></span></p>
+            <button v-on:click="addToCart()" v-bind:disabled="!canAddToCart">Add to Cart</button>
+            <p><span v-text="numberOfItems"></span> Items in cart</p>
+        </div>
+        <div v-else>
+            <h2>Checkout Page</h2>
+            <button v-on:click="showCart()" v-bind:disabled="!canShowCart">Back to Home Page</button>
+            <p><span v-text="numberOfItems"></span> Items in cart</p>
+        </div>
+    </div>
+
+    <script type="module">
+        const {createApp} = Vue
+        const myApp = Vue.createApp({
+            data(){
+                return{
+                    message: "Welcome to my PetStore !!!",
+                    product:
+                    {
+                        id: 1101,
+                        title: "Best Cat Food for your Cat",
+                        description: "irresistible Cat Food",
+                        price: 2000,
+                        image: "Images/product-fullsize.png",
+                        availability: 5,
+                        likes: 100,
+                        likedByUser: false
+                    },
+                    cart:[],
+                    displayCart:false,
+                }
+            },
+            methods:{
+                getImageUrl(){
+                    return this.product.image;
+                },
+                addToCart(){
+                    this.cart.push(this.product.id)
+                    this.product.availability -= 1
+                },
+                showCart(){
+                    this.displayCart = !this.displayCart
+                },
+                clickLikeBtn(){
+                    this.likes != this.likes
+                }
+            },
+            computed:{ // for true/false
+                canAddToCart(){
+                    return this.product.availability > 0
+                },
+                numberOfItems(){
+                    return this.cart.length
+                },
+                canShowCart(){
+                    return this.cart.length > 0
+                }
+
+            }
+        })
+        myApp.mount('#petStore')
+    </script>
+
+    <script>
+
+    </script>
+    
+</body>
+</html>
